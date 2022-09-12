@@ -1,0 +1,60 @@
+WebSocket.prototype.emit = function (event, data) {
+  this.send(JSON.stringify({ event, data }));
+};
+
+const url = `ws://127.0.0.1:9876/`;
+
+const server = new WebSocket(url);
+
+const user = document.getElementById("userName");
+const submit = document.getElementById("userSubmit");
+
+
+const message = document.getElementById("messages");
+const input = document.getElementById("input");
+const button = document.getElementById("send");
+
+button.disabled = true;
+
+server.onopen = function (event) {
+  //   console.log(event, "eve");
+
+  button.disabled = false;
+
+  //   server.send("hello from client");
+  //   server.send("ap");
+};
+
+server.onmessage = function (event) {
+  //   const { data } = event;
+  //   console.log(data);
+  //   const newMessage = document.createElement("div");
+  //   newMessage.innerText = data;
+  //   message.appendChild(newMessage);
+};
+
+input.addEventListener("keyup", function () {
+  if (!input.value) {
+    server.emit("removeTypingUsers");
+  } else {
+    server.emit("addTypingUsers");
+  }
+});
+
+// button.addEventListener("click", sendMessage, false);
+
+// function sendMessage() {
+//   const text = input?.value;
+//   server.send(text);
+// }
+
+button.addEventListener(
+  "click",
+  function (event) {
+    const text = input.value;
+    server.emit("sendMessage", { text });
+    input.value = "";
+    server.emit("removeTypingUsers");
+  },
+  false
+);
