@@ -13,6 +13,8 @@ const url = `ws://127.0.0.1:9876/`;
 
 const server = new WebSocket(url);
 
+const username = document.getElementById("currUser");
+
 const userSection = document.getElementById("userSection");
 const user = document.getElementById("userName");
 const submit = document.getElementById("userSubmit");
@@ -24,6 +26,7 @@ const button = document.getElementById("send");
 
 const listUsers = document.getElementById("listUsers");
 const listMessages = document.getElementById("listMessages");
+
 
 chatSection.style.display = "none";
 
@@ -69,6 +72,7 @@ submit.addEventListener(
       currUserName = currUser;
       server.emit("thisUser", { user: currUser, status: "green" });
       user.value = "";
+      username.innerHTML=currUser;
       userSection.style.display = "none";
       chatSection.style.display = "block";
     } else {
